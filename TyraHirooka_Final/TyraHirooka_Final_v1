@@ -1,0 +1,376 @@
+let monoSynth;
+let guitarZone = [];
+let string_e = [];
+let string_a = [];
+let string_d = [];
+let string_g = [];
+let string_b = [];
+let string_E = [];
+let openstrings = [];
+let x1 = 200;
+let y1 = 200;
+let option = 2;
+
+function setup() {
+createCanvas(1000, 800);
+monoSynth = new p5.MonoSynth();
+
+	// i need to make this an array...
+  let e1 = new zone(100,100,100,15,color(128,128,128)); 
+  let e2 = new zone(200,100,100,15,color(128,128,128)); 
+  let e3 = new zone(300,100,100,15,color(128,128,128)); 
+  let e4 = new zone(400,100,100,15,color(128,128,128)); 
+  let e5 = new zone(500,100,100,15,color(128,128,128)); 
+  
+  let a1 = new zone(100,150,100,13,color(128,128,128));
+  let a2 = new zone(200,150,100,13,color(128,128,128));
+  let a3 = new zone(300,150,100,13,color(128,128,128));
+  let a4 = new zone(400,150,100,13,color(128,128,128));
+  let a5 = new zone(500,150,100,13,color(128,128,128)); 
+  
+  
+  let d1  = new zone(100,200,100,11,color(128,128,128));
+  let d2 = new zone(200,200,100,11,color(128,128,128));
+  let d3 = new zone(300,200,100,11,color(128,128,128));
+  let d4 = new zone(400,200,100,11,color(128,128,128));
+  let d5 = new zone(500,200,100,11,color(128,128,128));
+  
+  
+  let g1  = new zone(100,250,100,9,color(128,128,128));
+  let g2 = new zone(200,250,100,9,color(128,128,128));
+  let g3 = new zone(300,250,100,9,color(128,128,128));  
+  let g4 = new zone(400,250,100,9,color(128,128,128));
+  let g5 = new zone(500,250,100,9,color(128,128,128));
+  
+  
+  let b1  = new zone(100,300,100,7,color(128,128,128));
+  let b2 = new zone(200,300,100,7,color(128,128,128));
+  let b3 = new zone(300,300,100,7,color(128,128,128));
+  let b4 = new zone(400,300,100,7,color(128,128,128));
+  let b5 = new zone(500,300,100,7,color(128,128,128));
+  
+  
+  let E1  = new zone(100,350,100,4,color(128,128,128)); // F 
+  let E2 = new zone(200,350,100,4,color(128,128,128));// F#
+  let E3 = new zone(300,350,100,4,color(128,128,128)); // G
+  let E4 = new zone(400,350,100,4,color(128,128,128)); // Ab
+  let E5 = new zone(500,350,100,4,color(128,128,128)); // A
+	
+	let e  = new zone(650,100,250,4,color(128,128,128)); // F 
+  let a = new zone (650,150,250,4,color(128,128,128));// F#
+  let d = new zone(650,200,250,4,color(128,128,128)); // G
+  let g = new zone(650,250,250,4,color(128,128,128)); // Ab
+  let b = new zone(650,300,250,4,color(128,128,128)); 
+	let E = new zone(650,350,250,4,color(128,128,128));
+  
+  string_e.push(e1);
+  string_e.push(e2);
+  string_e.push(e3);
+  string_e.push(e4);
+  string_e.push(e5);
+  
+  string_a.push(a1);
+  string_a.push(a2);
+  string_a.push(a3);
+  string_a.push(a4);
+  string_a.push(a5);
+  
+  string_d.push(d1);
+  string_d.push(d2);
+  string_d.push(d3);
+  string_d.push(d4);
+  string_d.push(d5);
+  
+  string_g.push(g1);
+  string_g.push(g2);
+  string_g.push(g3);
+  string_g.push(g4);
+  string_g.push(g5);
+  
+  string_b.push(b1);
+  string_b.push(b2);
+  string_b.push(b3);
+  string_b.push(b4);
+  string_b.push(b5);
+  
+  string_E.push(E1);
+  string_E.push(E2);
+  string_E.push(E3);
+  string_E.push(E4);
+  string_E.push(E5);
+	
+  openstrings.push(e);
+  openstrings.push(a);
+  openstrings.push(d);
+  openstrings.push(g);
+  openstrings.push(b);
+	openstrings.push(E);
+
+  if(mouseIsPressed == true){
+      if(mouseX > e1.x && mouseX < (e1.x + 100) && (e1.y < mouseY < (e1.y + 15))){
+        note = 'F3';
+      }
+    else if(mouseX > e2.x && mouseX < (e2.x + 100) && (e2.y < mouseY < (e2.y + 15))){
+        note = 'Gb3';
+      }
+    else if(mouseX > e3.x && mouseX < (e3.x + 100) && (e3.y < mouseY < (e3.y + 15))){
+        note = 'G3';
+      }
+    else if(mouseX > e4.x && mouseX < (e4.x + 100) && (e4.y < mouseY < (e4.y + 15))){
+        note = 'Ab3';
+      }
+    else if(mouseX > e5.x && mouseX < (e5.x + 100) && (e5.y < mouseY < (e5.y + 15))){
+        note = 'A3';
+      }
+else if(mouseX > a1.x && mouseX < (a1.x + 100) && (a1.y < mouseY < (a1.y + 15))){
+        note = 'Bb3';
+      }
+    else if(mouseX > a2.x && mouseX < (a2.x + 100) && (a2.y < mouseY < (a2.y + 15))){
+        note = 'B3';
+      }
+    else if(mouseX > a3.x && mouseX < (a3.x + 100) && (a3.y < mouseY < (a3.y + 15))){
+        note = 'C3';
+      }
+    else if(mouseX > a4.x && mouseX < (a4.x + 100) && (a4.y < mouseY < (a4.y + 15))){
+        note = 'Db3';
+      }
+    else if(mouseX > a5.x && mouseX < (a5.x + 100) && (a5.y < mouseY < (a5.y + 15))){
+        note = 'D3';
+      }
+    else if(mouseX > d1.x && mouseX < (d1.x + 100) && (d1.y < mouseY < (d1.y + 15))){
+        note = 'Eb3';
+      }
+    else if(mouseX > d2.x && mouseX < (d2.x + 100) && (d2.y < mouseY < (d2.y + 15))){
+        note = 'E3';
+      }
+    else if(mouseX > d3.x && mouseX < (d3.x + 100) && (d3.y < mouseY < (d3.y + 15))){
+        note = 'F3';
+      }
+    else if(mouseX > d4.x && mouseX < (d4.x + 100) && (d4.y < mouseY < (d4.y + 15))){
+        note = 'Gb3';
+      }
+else if(mouseX > d5.x && mouseX < (d5.x + 100) && (d5.y < mouseY < (d5.y + 15))){
+        note = 'G4';
+      }
+    else if(mouseX > g1.x && mouseX < (g1.x + 100) && (g1.y < mouseY < (g1.y + 15))){
+        note = 'Ab4';
+      }
+    else if(mouseX > g2.x && mouseX < (g2.x + 100) && (g2.y < mouseY < (g2.y + 15))){
+        note = 'A4';
+      }
+    else if(mouseX > g3.x && mouseX < (g3.x + 100) && (g3.y < mouseY < (g3.y + 15))){
+        note = 'Bb4';
+      }
+    else if(mouseX > g4.x && mouseX < (g4.x + 100) && (g4.y < mouseY < (g4.y + 15))){
+        note = 'B4';
+      }
+    else if(mouseX > g5.x && mouseX < (g5.x + 100) && (g5.y < mouseY < (g5.y + 15))){
+        note = 'C4';
+      }
+    else if(mouseX > b1.x && mouseX < (b1.x + 100) && (b1.y < mouseY < (b1.y + 15))){
+        note = 'C4';
+      }
+    else if(mouseX > b2.x && mouseX < (b2.x + 100) && (b2.y < mouseY < (b2.y + 15))){
+        note = 'Db4';
+      }
+    else if(mouseX > b3.x && mouseX < (b3.x + 100) && (b3.y < mouseY < (b3.y + 15))){
+        note = 'D4';
+      }
+else if(mouseX > b4.x && mouseX < (b4.x + 100) && (b4.y < mouseY < (b4.y + 15))){
+        note = 'Eb4';
+      }
+    else if(mouseX > b5.x && mouseX < (b5.x + 100) && (b5.y < mouseY < (b5.y + 15))){
+        note = 'E4';
+      }
+    else if(mouseX > E1.x && mouseX < (E1.x + 100) && (E1.y < mouseY < (E1.y + 15))){
+        note = 'F4';
+      }
+    else if(mouseX > E2.x && mouseX < (E2.x + 100) && (E2.y < mouseY < (E2.y + 15))){
+        note = 'Gb4';
+      }
+    else if(mouseX > E3.x && mouseX < (E3.x + 100) && (E3.y < mouseY < (E3.y + 15))){
+        note = 'G5';
+      }
+    else if(mouseX > E4.x && mouseX < (E4.x + 100) && (E4.y < mouseY < (E4.y + 15))){
+        note = 'Ab5';
+      }
+    else if(mouseX > E5.x && mouseX < (E5.x + 100) && (E5.y < mouseY < (E5.y + 15))){
+         note = 'A5';
+      }
+      
+      
+else if(mouseX > e.x && mouseX < (e.x + 100) && (e.y < mouseY < (e.y + 15))){
+        note = 'Gb3';
+      }
+    else if(mouseX > a.x && mouseX < (a.x + 100) && (a.y < mouseY < (a.y + 15))){
+        note = 'Gb3';
+      }
+    else if(mouseX > d.x && mouseX < (d.x + 100) && (d.y < mouseY < (d.y + 15))){
+        note = 'Gb3';
+      }
+    else if(mouseX > g.x && mouseX < (g.x + 100) && (g.y < mouseY < (g.y + 15))){
+        note = 'Gb3';
+      }
+    else if(mouseX > b.x && mouseX < (b.x + 100) && (b.y < mouseY < (b.y + 15))){
+        note = 'Gb3';
+      }
+    else if(mouseX > E.x && mouseX < (E.x + 100) && (E.y < mouseY < (E.y + 15))){
+        note = 'Gb3';
+      }
+       monoSynth.play(note, 0.5, 0, 0.2);
+      
+  }
+
+}
+
+function mousePressed() {
+  for (let i = 0; i < string_e.length; i++) {
+    string_e[i].click(mouseX,mouseY);
+    string_a[i].click(mouseX,mouseY);
+    string_d[i].click(mouseX,mouseY);
+    string_g[i].click(mouseX,mouseY);
+    string_b[i].click(mouseX,mouseY);
+    string_E[i].click(mouseX,mouseY);
+  }
+	for (let i = 0; i < openstrings.length; i++) {
+		   openstrings[i].click(mouseX,mouseY);
+	}
+}
+
+function mouseReleased() {
+  for (let i = 0; i < string_e.length; i++) {
+    string_e[i].y = 100;
+    string_a[i].y = 150;
+    string_d[i].y = 200;
+    string_g[i].y = 250;
+    string_b[i].y = 300;
+    string_E[i].y = 350;
+  }
+	for (let i = 0; i < openstrings.length; i++) {
+		   openstrings[i].y = 100 + (i * 50);
+	}
+  }
+
+  
+  
+function draw() {
+  background(220);
+	//frets
+	fill(165,42,42);
+  rect(90,90, 520,280);
+	rect(90,90,10,270);
+	rect(190,90,10,270);
+	rect(290,90,10,270);
+	rect(390,90,10,270);
+	rect(490,90,10,270);
+	
+	//fret strings
+  for (let i = 0; i < string_e.length; i++) {
+    string_e[i].show();
+    string_a[i].show();
+    string_d[i].show();
+    string_g[i].show();
+    string_b[i].show();
+    string_E[i].show();
+  }
+	//open string notes
+	for (let i = 0; i < openstrings.length; i++) {
+		   openstrings[i].show();
+	}
+	
+	//cursor!
+	fill(129, 0, 121,70);
+	if (mouseX>625){
+  triangle(mouseX, mouseY, mouseX-30, mouseY - 50, mouseX + 30, mouseY - 50);
+	}
+	else{
+		circle(mouseX,mouseY, 30, 30);
+	}
+}
+class zone {
+  constructor(x, y, w, h, color) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.color = color;
+    //this.sound = sound;
+  }
+  
+  show() {
+    fill(this.color);
+    rect(this.x, this.y, this.w, this.h);
+  }
+  
+    
+  
+  click(mouseX, mouseY){
+    color(165,42,42);
+    let d = dist(mouseX, mouseY, this.x, this.y);
+		if (mouseX < 625){
+          if((d <= this.w/2) && (mouseX > this.x) && (mouseX < this.x+100) && (mouseY < this.y+10)){
+			this.y = this.y + 10;
+              fill(255);
+            
+		  }
+		}
+		else{
+		  if((d <= this.w/2) && (mouseX > this.x) && (mouseX < this.x+200) && (mouseY < this.y+4)){
+			this.y = this.y + 10;
+            fill(255);
+		}
+
+				
+			}
+			
+    
+  }
+  
+}
+  /*
+  
+  if (option == 2){
+  //optionTwo();
+    strokeWeight(1);
+  let hold = false;
+    
+  for (let i = 0; i < guitarZone.length; i++) {
+    fill(100);
+    if (!hold && mouseIsPressed) {
+      hold = guitarZone[i].some(zone => detectZone(zone, mouseX, mouseY));
+      if (zone) {
+        fill('red');
+      }
+    }
+    
+  }
+}
+}  
+function optionTwo(){
+  background(220);
+
+    for(let i=0; i<5; i++){
+      let guitarFretY = 100;
+      l = line(guitarFretX[i], guitarFretY, guitarFretX[i]+100, guitarFretY);
+    }
+    
+    function detectZone(zone, x, y){
+      let c = false
+      for (i = 0, j = zone.length -1; i < zone.length; j = i++){
+        if(((zone[i][1]> y) != (zone [j][1]>y)) && x > (y - zone[i][1])) {
+          c = !c;
+      }
+    }
+  }
+  fill(142, 154, 173);
+  circle(mouseX, mouseY, 20);
+  let e1 = line(10, , 400, 200);
+  let distancetoPerson = dist(mouseX, mouseY, x1, y1);
+  if (distancetoPerson < 50){
+    stroke(255, 13, 13);
+  }
+    else{
+      stroke(0);
+    }
+   circle(mouseX, mouseY, 20);
+   */

@@ -1,0 +1,423 @@
+let PolySynth;
+let notes = [];
+let guitarZone = [];
+let string_e = [];
+let string_a = [];
+let string_d = [];
+let string_g = [];
+let string_b = [];
+let string_E = [];
+let openstrings = [];
+let x1 = 200;
+let y1 = 200;
+let option = 1;
+let score = 0;
+let currentnote;
+let gamenotes = ['E2','F2','Gb2','G2','Ab3','A3','Bb3','B3','C3','Db3','D3','Eb3','E3','F3','Gb3','G3','Ab4','A4','Bb4','B4','C4','Db4','D4','Eb4','E4','F4','Gb4','G4','Ab5','A5'];
+
+let promptnote;
+
+function setup() {
+    createCanvas(1000, 800);
+    PolySynth = new p5.PolySynth();
+    // low e string frets 1-5
+    let e1 = new zone(100,100,100,15,color(128,128,128),'F2'); 
+    let e2 = new zone(200,100,100,15,color(128,128,128),'Gb2'); 
+    let e3 = new zone(300,100,100,15,color(128,128,128),'G2'); 
+    let e4 = new zone(400,100,100,15,color(128,128,128),'Ab3'); 
+    let e5 = new zone(500,100,100,15,color(128,128,128),'A3'); 
+    
+    // a string frets 1-5
+    let a1 = new zone(100,150,100,13,color(128,128,128));
+    let a2 = new zone(200,150,100,13,color(128,128,128));
+    let a3 = new zone(300,150,100,13,color(128,128,128));
+    let a4 = new zone(400,150,100,13,color(128,128,128));
+    let a5 = new zone(500,150,100,13,color(128,128,128)); 
+
+    // d string frets 1-5
+    let d1  = new zone(100,200,100,11,color(128,128,128));
+    let d2 = new zone(200,200,100,11,color(128,128,128));
+    let d3 = new zone(300,200,100,11,color(128,128,128));
+    let d4 = new zone(400,200,100,11,color(128,128,128));
+    let d5 = new zone(500,200,100,11,color(128,128,128));
+
+    // g string frets 1-5
+    let g1  = new zone(100,250,100,9,color(128,128,128));
+    let g2 = new zone(200,250,100,9,color(128,128,128));
+    let g3 = new zone(300,250,100,9,color(128,128,128));  
+    let g4 = new zone(400,250,100,9,color(128,128,128));
+    let g5 = new zone(500,250,100,9,color(128,128,128));
+
+    // b string frets 1-5
+    let b1  = new zone(100,300,100,7,color(128,128,128));
+    let b2 = new zone(200,300,100,7,color(128,128,128));
+    let b3 = new zone(300,300,100,7,color(128,128,128));
+    let b4 = new zone(400,300,100,7,color(128,128,128));
+    let b5 = new zone(500,300,100,7,color(128,128,128));
+
+    // high E string frets 1-5
+    let E1  = new zone(100,350,100,4,color(128,128,128)); // F 
+    let E2 = new zone(200,350,100,4,color(128,128,128));// F#
+    let E3 = new zone(300,350,100,4,color(128,128,128)); // G
+    let E4 = new zone(400,350,100,4,color(128,128,128)); // Ab
+    let E5 = new zone(500,350,100,4,color(128,128,128)); // A
+
+    // open note, strings 1-6 
+    let e  = new zone(650,100,250,4,color(128,128,128)); 
+    let a = new zone (650,150,250,4,color(128,128,128));
+    let d = new zone(650,200,250,4,color(128,128,128)); 
+    let g = new zone(650,250,250,4,color(128,128,128)); 
+    let b = new zone(650,300,250,4,color(128,128,128)); 
+    let E = new zone(650,350,250,4,color(128,128,128));
+
+    string_e.push(e1);
+    string_e.push(e2);
+    string_e.push(e3);
+    string_e.push(e4);
+    string_e.push(e5);
+
+    string_a.push(a1);
+    string_a.push(a2);
+    string_a.push(a3);
+    string_a.push(a4);
+    string_a.push(a5);
+
+    string_d.push(d1);
+    string_d.push(d2);
+    string_d.push(d3);
+    string_d.push(d4);
+    string_d.push(d5);
+
+    string_g.push(g1);
+    string_g.push(g2);
+    string_g.push(g3);
+    string_g.push(g4);
+    string_g.push(g5);
+
+    string_b.push(b1);
+    string_b.push(b2);
+    string_b.push(b3);
+    string_b.push(b4);
+    string_b.push(b5);
+
+    string_E.push(E1);
+    string_E.push(E2);
+    string_E.push(E3);
+    string_E.push(E4);
+    string_E.push(E5);
+
+    openstrings.push(e);
+    openstrings.push(a);
+    openstrings.push(d);
+    openstrings.push(g);
+    openstrings.push(b);
+    openstrings.push(E);
+
+}
+
+
+function mousePressed() {
+    for (let i = 0; i < string_e.length; i++) {
+        string_e[i].click(mouseX,mouseY);
+        string_a[i].click(mouseX,mouseY);
+        string_d[i].click(mouseX,mouseY);
+        string_g[i].click(mouseX,mouseY);
+        string_b[i].click(mouseX,mouseY);
+        string_E[i].click(mouseX,mouseY);
+    }
+    for (let i = 0; i < openstrings.length; i++) {
+        openstrings[i].click(mouseX,mouseY);
+    }
+    userStartAudio();
+    if(mouseX > string_e[0].x && mouseX < (string_e[0].x + 100) && (100 < mouseY) && (mouseY < 125)){
+        notes = 'F2';
+    }
+    else if(mouseX > string_e[1].x && mouseX < (string_e[1].x + 100) && (100 < mouseY) && (mouseY < 125)){
+        notes = 'Gb2';
+    }
+    else if(mouseX > string_e[2].x && mouseX < (string_e[2].x + 100) &&(100 < mouseY) && (mouseY < 125)){
+        notes = 'G2';
+    }
+    else if(mouseX > string_e[3].x && mouseX < (string_e[3].x + 100) &&(100 < mouseY) && (mouseY < 125)){
+        notes = 'Ab3';
+    }
+    else if(mouseX > string_e[4].x && mouseX < (string_e[4].x + 100) && (100 < mouseY) && (mouseY < 125)){
+        notes = 'A3';
+    }
+    else if(mouseX > string_a[0].x && mouseX < (string_a[0].x + 100) && (150 < mouseY) && (mouseY < 175)){
+        notes = 'Bb3';
+    }
+    else if(mouseX > string_a[1].x && mouseX < (string_a[1].x + 100) &&(150 < mouseY) && (mouseY < 175)){
+        notes = 'B3';
+    }
+    else if(mouseX > string_a[2].x && mouseX < (string_a[2].x + 100) && (150 < mouseY) && (mouseY < 175)){
+        notes = 'C3';
+    }
+    else if(mouseX > string_a[3].x && mouseX < (string_a[3].x + 100) && (150 < mouseY) && (mouseY < 175)){
+        notes = 'Db3';
+    }
+    else if(mouseX > string_a[4].x && mouseX < (string_a[4].x + 100) && (150 < mouseY) && (mouseY < 175)){
+        notes= 'D3';
+    }
+    else if(mouseX > string_d[0].x && mouseX < (string_d[0].x + 100) && (200 < mouseY) && (mouseY < 225)){
+        notes = 'Eb3';
+    }
+    else if(mouseX > string_d[1].x && mouseX < (string_d[1].x + 100) &&(200 < mouseY) && (mouseY < 225)){
+        notes = 'E3';
+    }
+    else if(mouseX > string_d[2].x && mouseX < (string_d[2].x + 100) && (200 < mouseY) && (mouseY < 225)){
+        notes = 'F3';
+    }
+    else if(mouseX > string_d[3].x && mouseX < (string_d[3].x + 100) && (200 < mouseY) && (mouseY < 225)){
+        notes = 'Gb3';
+    }
+    else if(mouseX > string_d[4].x && mouseX < (string_d[4].x + 100) && (200 < mouseY) && (mouseY < 225)){
+        notes = 'G3';
+    }
+    else if(mouseX > string_g[0].x && mouseX < (string_g[0].x + 100) &&  (250 < mouseY) && (mouseY < 275)){
+        notes = 'Ab4';
+    }
+    else if(mouseX > string_g[1].x && mouseX < (string_g[1].x + 100) && (250 < mouseY) && (mouseY < 275)){
+        notes = 'A4';
+    }
+    else if(mouseX > string_g[2].x && mouseX < (string_g[2].x + 100) && (250 < mouseY) && (mouseY < 275)){
+        notes = 'Bb4';
+    }
+    else if(mouseX > string_g[3].x && mouseX < (string_g[3].x + 100) &&  (250 < mouseY) && (mouseY < 275)){
+        notes = 'B4';
+    }
+    else if(mouseX > string_g[4].x && mouseX < (string_g[4].x + 100) &&  (250 < mouseY) && (mouseY < 275)){
+        notes = 'C4';
+    }
+    else if(mouseX > string_b[0].x && mouseX < (string_b[0].x + 100) &&  (300 < mouseY) && (mouseY < 325)){
+        notes = 'C4';
+    }
+    else if(mouseX > string_b[1].x && mouseX < (string_b[1].x + 100) &&  (300 < mouseY) && (mouseY < 325)){
+        notes = 'Db4';
+    }
+    else if(mouseX > string_b[2].x && mouseX < (string_b[2].x + 100) &&  (300 < mouseY) && (mouseY < 325)){
+        notes = 'D4';
+    }
+    else if(mouseX > string_b[3].x && mouseX < (string_b[3].x + 100) &&  (300 < mouseY) && (mouseY < 325)){
+        notes = 'Eb4';
+    }
+    else if(mouseX > string_b[4].x && mouseX < (string_b[4].x + 100) &&  (300 < mouseY) && (mouseY < 325)){
+        notes = 'E4';
+    }
+    else if(mouseX > string_E[0].x && mouseX < (string_E[0].x + 100) &&  (350 < mouseY) && (mouseY < 375)){
+        notes = 'F4';
+    }
+    else if(mouseX > string_E[1].x && mouseX < (string_E[1].x + 100) &&  (350 < mouseY) && (mouseY < 375)){
+        notes = 'Gb4';
+    }
+    else if(mouseX > string_E[2].x && mouseX < (string_E[2].x + 100) &&  (350 < mouseY) && (mouseY < 375)){
+        notes = 'G4';
+    }
+    else if(mouseX > string_E[3].x && mouseX < (string_E[3].x + 100) && (350 < mouseY) && (mouseY < 375)){
+        notes = 'Ab5';
+    }
+    else if(mouseX > string_E[4].x && mouseX < (string_E[4].x + 100) && (350 < mouseY) && (mouseY < 375)){
+        notes = 'A5';
+    }
+
+    // open strings
+    else if(mouseX > openstrings[0].x && (mouseX < openstrings[0].x + 200) && (100 < mouseY) && (mouseY < 125)){
+        notes = 'E2';
+    }
+    else if(mouseX > openstrings[1].x && (mouseX < openstrings[1].x + 200) && (150 < mouseY) && (mouseY < 175)){
+        notes = 'A3';
+    }
+    else if(mouseX > openstrings[2].x && mouseX < (openstrings[2].x + 200) && (200 < mouseY) && (mouseY < 225)){
+        notes = 'D3';
+    }
+    else if(mouseX > openstrings[3].x && mouseX < (openstrings[3].x + 200) && (250 < mouseY) && (mouseY < 275)){
+        notes = 'G3';
+    }
+    else if(mouseX > openstrings[4].x  &&  mouseX < (openstrings[4].x + 200) && (300 < mouseY) && (mouseY < 325)){
+        notes = 'B4';
+    }
+    else if(mouseX > openstrings[5].x && mouseX < (openstrings[5].x + 200) && (350 < mouseY) && (mouseY < 375)){
+        notes = 'E4';
+    }
+    currentnote = notes;
+    PolySynth.play(currentnote, 0.5, 0, 1);
+   
+
+}
+
+function mouseReleased() {
+    for (let i = 0; i < string_e.length; i++) {
+        string_e[i].y = 100;
+        string_a[i].y = 150;
+        string_d[i].y = 200;
+        string_g[i].y = 250;
+        string_b[i].y = 300;
+        string_E[i].y = 350;
+    }
+    for (let i = 0; i < openstrings.length; i++) {
+        openstrings[i].y = 100 + (i * 50);
+    }
+    notes = '';
+}
+
+
+
+function draw() {
+    if(option == 1){
+        background(220);
+        guitardraw()
+
+        //cursors
+        fill(129, 0, 121,70);
+        if (mouseX>625){
+            triangle(mouseX, mouseY, mouseX-30, mouseY - 50, mouseX + 30, mouseY - 50);
+        }
+        else{
+            circle(mouseX,mouseY, 30);
+        }
+        textSize(30);
+        text('practice mode', 70, 30);
+        text('1', 135, 70);
+        text('2', 235, 70);
+        text('3', 335, 70);
+        text('4', 435, 70);
+        text('5', 535, 70);
+        text('note played:', 100, 500);
+        textSize(100);
+        text(currentnote, 100, 600);
+    }
+    if(option == 2){
+        background(0);
+        gameround();
+        //cursors
+        fill(129, 0, 121,70);
+        if (mouseX>625){
+            triangle(mouseX, mouseY, mouseX-30, mouseY - 50, mouseX + 30, mouseY - 50);
+        }
+        else{
+            circle(mouseX,mouseY, 30);
+        }
+        if(currentnote == promptnote){
+            prompt = 'correct';
+            score = score + 100;
+            background(0);
+            noLoop();
+            setTimeout(gameround(),3000);
+        }
+            
+        else {
+            prompt = 'try again';
+        }
+    }
+}
+  
+
+// note zone construction
+    class zone {
+        constructor(x, y, w, h, color, note) {
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.color = color;
+        this.note = notes;
+    }
+
+    show() {
+        fill(this.color);
+        rect(this.x, this.y, this.w, this.h);
+    }
+
+    click(mouseX, mouseY){
+        currentnote = this.note;
+        color(165,42,42);
+        let d = dist(mouseX, mouseY, this.x, this.y);
+        if (mouseX < 625){
+            if((mouseX > this.x) && (mouseX < this.x+100) && (mouseY > this.y) && (mouseY <= this.y+15)){
+                this.y = this.y + 10;
+                  fill(255);
+            }
+        }
+        else{
+            if((mouseX < 900) && (mouseY > this.y-10) && (mouseY < this.y+30)){
+                this.y = this.y + 10;
+                fill(255);
+            }       
+        }
+    }
+}
+
+function guitardraw(){
+  //frets
+        fill(165,42,42);
+        rect(90,90, 520,280);
+        rect(90,90,10,270);
+        rect(190,90,10,270);
+        rect(290,90,10,270);
+        rect(390,90,10,270);
+        rect(490,90,10,270);
+
+        //fret strings
+        for (let i = 0; i < string_e.length; i++) {
+            string_e[i].show();
+            string_a[i].show();
+            string_d[i].show();
+            string_g[i].show();
+            string_b[i].show();
+            string_E[i].show();
+        }
+
+        //open string notes
+        for (let i = 0; i < openstrings.length; i++) {
+            openstrings[i].show();
+        }
+}
+
+function gamesetup(){
+  textSize(30);
+        fill(225);
+        text('game mode', 70, 30);
+        text('1', 135, 70);
+        text('2', 235, 70);
+        text('3', 335, 70);
+        text('4', 435, 70);
+        text('5', 535, 70);
+        text('note played:', 100, 500);
+        text('try to play:', 400, 500);
+        text('score:', 700, 30);
+        textSize(100);
+        text(currentnote, 100, 600);
+        text(promptnote, 400, 600);
+        let prompt = 'ready?';
+        textSize(50);
+        text(prompt, 700, 575);
+        textSize(30);
+        text('press enter to generate a note', 90, 400);
+        text(score,780,30);
+}
+
+
+function gameround(){
+            gamesetup();
+            guitardraw();
+            PolySynth.play(promptnote, 0.5, 0, 1);
+            text(promptnote, 400, 600);
+            
+}
+
+function keyPressed(){
+    if(keyCode === LEFT_ARROW) {
+        if (option > 0){
+            option = option - 1;
+        }
+    }
+    if(keyCode === RIGHT_ARROW) {
+        option++;
+    }
+    if(keyCode === ESCAPE){
+     promptnote = gamenotes[Math.floor(Math.random() * gamenotes.length)];
+    }
+    if(keyCode === ENTER){
+      playgame();
+    }
+}
