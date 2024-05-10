@@ -1,0 +1,4 @@
+/*
+https://www.codedex.io/projects/build-an-interactive-soundboard-with-p5js <- this is the main resource I used. I was utilizing it to try to understand how I would do the zoning for the frets on the guitar.
+https://p5js.org/reference/#/libraries/p5.sound <- I also used this sound library, specifically the MonoSynth to generate the sounds!
+*/
